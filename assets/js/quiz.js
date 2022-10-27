@@ -55,9 +55,49 @@ function stopgame() {
     summary.textContent = "Your Score is: " + score;
 }
 
-function onSaveScore()
-function onViewScores()
+// saving the score
+function onSaveScore(e) {
+    var initials = document.getElementById("initials").value
 
+    //saves to local storage
+    if (initials !== "") {
+        localStorage.setItem(initials, score);
+
+        document.getElementById("initials").value = "";
+    }
+}
+
+// viewing the score via external html
+function onViewScores(e) {
+    window.location.href = 'scores.html';
+}
+
+//selecting the answer choices
+function onSelectAnswer(event) {
+    var correctAnswer = questions[currentQuestion-1].answer;
+    var userAnswer = event.target.textContent;
+console.log("correctAnswer ", correctAnswer)    
+console.log("userAnswer ", userAnswer)
+    if (userAnswer === correctAnswer) {
+        score++;
+
+        displayMessage('You got it!')
+
+    } else {
+        displayMessage('Uh oh!')
+    }
+
+    //next question
+    displayQuestion();
+}
+
+function displayMessage(msg) {
+    message.textContent = msg;
+
+    setTimeout(function () {
+        message.textContent = "";
+    }, 1000);
+}
 
 
 
