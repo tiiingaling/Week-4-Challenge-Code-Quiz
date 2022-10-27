@@ -22,6 +22,7 @@ var score = 0;
 var currentQuestion = 0;
 var countdownTimer;
 
+// start game, 60 seconds on timer, resets score to 0, start at question 0
 function onStartQuiz() {
     secondsLeft = 60;
     currentQuestion = 0;
@@ -43,7 +44,9 @@ function onStartQuiz() {
     }, 1000);
 
     displayQuestion(currentQuestion);
+}
 
+//when game stops, timer is stopped and cleared, questions are hidden then results are shown
 function stopgame() {
     clearInterval(countdownTimer);
     timer.textContent = "60"
@@ -99,11 +102,34 @@ function displayMessage(msg) {
     }, 1000);
 }
 
+function displayQuestion(q) {
 
+    var question = questions[currentQuestion];
+    document.getElementById("question").textContent = question.title
 
+    currentQuestion++;
 
+    //clears the html for the options
+    options.innerHTML = '';
 
+    // no more questions
+    if (currentQuestion >= questions.length) {
+        stopgame();
+        return;
+    }
 
+    for (var i = 0; i < question.choices.length; i++) {
+        var option = document.createElement("div");
+        option.textContent = question.choices[i];
+        option.onclick = onSelectAnswer;
+        option.classList.add("option");
+        option.classList.add("btn")
+
+        options.appendChild(option);
+    }
+}
+
+// EventListeners
 startQuiz.addEventListener("click", onStartQuiz);
 saveScore.addEventListener("click", onSaveScore);
 viewScores.addEventListener("click", onViewScores);
